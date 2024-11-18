@@ -140,6 +140,8 @@ nextcategory_end:
     jr $ra
     
 prevcategory:
+    addiu $sp, $sp, -4
+    sw $ra, 4($sp)
     # Verificar si cclist está vacío
     lw $t0, cclist        # Cargar la lista de categorías
     beqz $t0, error_201   # Si cclist es NULL, no hay categorías (error 201)
@@ -160,6 +162,8 @@ prevcategory:
     syscall              # Imprimir mensaje
     #move $a0, $t2       # Cargar el nombre de la categoría seleccionada (desde el nodo)
     #syscall             # Imprimir el nombre de la categoría seleccionada
+    lw $ra, 4($sp)
+    addiu $sp, $sp, 4
     jr $ra               # Volver
 
 listcategories:
@@ -203,7 +207,7 @@ delcategory:
 delcat_no_objs:
     lw $a0, wclist
     lw $a1, cclist
-    addiu $t5, $a0, 12
+    lw $t5, 12($a0)
     sw $t5, wclist
     jal delnode
     lw $ra, 4($sp)
@@ -381,7 +385,7 @@ delnode:
 node:
 	beq $a0, $t0, delnode_point_self
 	lw $t1, 0($a0) # get address to prev node
-	sw $t1, 0($t0)
+	sw $t1, 0($t0) # el anterior pasa a la siguiente categoria
 	sw $t0, 12($t1)
 	lw $t1, 0($a1) # get address to first node
 again:
@@ -390,6 +394,7 @@ again:
 	j delnode_exit
 delnode_point_self:
 	sw $zero, ($a1) # only one node
+	sw $zero, cclist
 delnode_exit:
 	jal sfree
 	lw $ra, 8($sp)
