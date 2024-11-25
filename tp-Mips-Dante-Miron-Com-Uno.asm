@@ -23,7 +23,7 @@ idObj: 	.asciiz "\nIngrese el ID del objeto a eliminar: "
 objName:.asciiz "\nIngrese el nombre de un objeto: "
 success:.asciiz "\nLa operación se realizo con exito\n\n"
 greater_symbol: .asciiz ">"
-invalid_option: .asciiz "\nOpción inválida. Inténtelo de nuevo.\n"
+invalid_option: .asciiz "\nOpción inválida. Inténtelo de nuevo.\nError 101 \n"
 not_found_msj: .asciiz "Not Found. \n"
 
 .text
